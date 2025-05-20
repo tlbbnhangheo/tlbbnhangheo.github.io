@@ -232,14 +232,18 @@ function submitRegister() {
     return;
   }
 
-  fetch('http://103.162.21.114/register.php', {
-    method: 'POST',
-    headers: {'Content-Type': 'application/json'},
-    body: JSON.stringify({ name: name, password: pass })
-  }).then(res => res.json())
-    .then(data => {
-      msg.innerText = data.message;
-    });
+ fetch('http://103.162.21.114/register.php', {
+  method: 'POST',
+  headers: {'Content-Type': 'application/json'},
+  body: JSON.stringify({ name: name, password: pass })
+})
+.then(res => res.json())
+.then(data => {
+  msg.innerText = data.message;
+})
+.catch(error => {
+  msg.innerText = "Đã xảy ra lỗi: " + error.message;
+});
 }
 
 function cancelRegister() {
