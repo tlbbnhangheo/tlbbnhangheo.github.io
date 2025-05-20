@@ -165,6 +165,7 @@
     <h3>MENU</h3>
     <a href="https://drive.usercontent.google.com/download?id=1t28sCYfBafj2Qk3r7l_J-IBDTR5tlWs3&export=download" target="_blank">Tải Game</a>
     <a href="https://zalo.me/g/wigepg179" target="_blank">Tham gia Cộng Đồng</a>
+	<a class="button" onclick="document.getElementById('registerForm').style.display='flex'">ĐĂNG KÝ TÀI KHOẢN</a>
   </div>
 
   <div class="container">
@@ -200,5 +201,65 @@
   <footer>
     © 2025 Server TLBB Private. Thiết kế bởi TLBB NHÀ NGHÈO 2025.
   </footer>
+  <div id="registerForm" style="display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.6); z-index:2000; justify-content:center; align-items:center;" onclick="closeOnOutsideClick(event)">
+  <div id="registerBox" style="background:white; padding:30px; border-radius:10px; width:350px;">
+    <h2 style="text-align:center;">ĐĂNG KÝ</h2>
+    <input id="reg_username" type="text" placeholder="Tên đăng nhập" style="width:100%; padding:10px; margin:10px 0;">
+    <input id="reg_password" type="password" placeholder="Mật khẩu" style="width:100%; padding:10px; margin:10px 0;">
+    <input id="reg_password2" type="password" placeholder="Nhập lại mật khẩu" style="width:100%; padding:10px; margin:10px 0;">
+    <div style="display:flex; gap:10px;">
+      <button onclick="submitRegister()" style="flex:1; padding:12px; background:red; color:white; font-weight:bold; border:none; cursor:pointer;">ĐĂNG KÝ</button>
+      <button onclick="cancelRegister()" style="flex:1; padding:12px; background:gray; color:white; font-weight:bold; border:none; cursor:pointer;">HỦY</button>
+    </div>
+    <p id="registerMsg" style="text-align:center; margin-top:15px;"></p>
+  </div>
+</div>
+</div>
+
+<script>
+function submitRegister() {
+  const name = document.getElementById('reg_username').value;
+  const pass = document.getElementById('reg_password').value;
+  const pass2 = document.getElementById('reg_password2').value;
+  const msg = document.getElementById('registerMsg');
+
+  if (!name || !pass || !pass2) {
+    msg.innerText = "Vui lòng điền đầy đủ!";
+    return;
+  }
+  if (pass !== pass2) {
+    msg.innerText = "Mật khẩu không khớp!";
+    return;
+  }
+
+  fetch('http://103.162.21.114/register.php', {
+    method: 'POST',
+    headers: {'Content-Type': 'application/json'},
+    body: JSON.stringify({ name: name, password: pass })
+  }).then(res => res.json())
+    .then(data => {
+      msg.innerText = data.message;
+    });
+}
+
+function cancelRegister() {
+  document.getElementById('registerForm').style.display = 'none';
+}
+
+// 👉 Đóng form khi click ra ngoài
+function closeOnOutsideClick(event) {
+  const formBox = document.getElementById('registerBox');
+  if (!formBox.contains(event.target)) {
+    document.getElementById('registerForm').style.display = 'none';
+  }
+}
+
+// 👉 Đóng form khi bấm phím ESC
+document.addEventListener('keydown', function(event) {
+  if (event.key === "Escape") {
+    document.getElementById('registerForm').style.display = 'none';
+  }
+});
+</script>
 </body>
 </html>
