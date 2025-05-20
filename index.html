@@ -259,6 +259,24 @@ function submitRegister() {
     msg.innerText = "Đã xảy ra lỗi: " + error.message;
   });
 }
+function cancelRegister() {
+  document.getElementById('registerForm').style.display = 'none';
+}
+
+// 👉 Đóng form khi click ra ngoài
+function closeOnOutsideClick(event) {
+  const formBox = document.getElementById('registerBox');
+  if (!formBox.contains(event.target)) {
+    document.getElementById('registerForm').style.display = 'none';
+  }
+}
+
+// 👉 Đóng form khi bấm phím ESC
+document.addEventListener('keydown', function(event) {
+  if (event.key === "Escape") {
+    document.getElementById('registerForm').style.display = 'none';
+  }
+});
 </script>
 
 </body>
