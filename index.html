@@ -215,11 +215,15 @@
 
 <script>
 function submitRegister() {
-  const name = document.getElementById('reg_username').value;
-  const pass = document.getElementById('reg_password').value;
-  const pass2 = document.getElementById('reg_password2').value;
+  const name = document.getElementById('reg_username').value.trim();
+  const pass = document.getElementById('reg_password').value.trim();
+  const pass2 = document.getElementById('reg_password2').value.trim();
   const msg = document.getElementById('registerMsg');
 
+  const forbidden = ['gm', 'ad', 'admin', 'adtlbb', 'gmtlbb'];
+  const nameLower = name.toLowerCase();
+
+  // Kiểm tra các điều kiện
   if (!name || !pass || !pass2) {
     msg.innerText = "Vui lòng điền đầy đủ!";
     return;
@@ -228,39 +232,34 @@ function submitRegister() {
     msg.innerText = "Mật khẩu không khớp!";
     return;
   }
-
- fetch('https://103.162.21.114/register.php', {
-  method: 'POST',
-  headers: {'Content-Type': 'application/json'},
-  body: JSON.stringify({ name: name, password: pass })
-})
-.then(res => res.json())
-.then(data => {
-  msg.innerText = data.message;
-})
-.catch(error => {
-  msg.innerText = "Đã xảy ra lỗi: " + error.message;
-});
-}
-
-function cancelRegister() {
-  document.getElementById('registerForm').style.display = 'none';
-}
-
-// 👉 Đóng form khi click ra ngoài
-function closeOnOutsideClick(event) {
-  const formBox = document.getElementById('registerBox');
-  if (!formBox.contains(event.target)) {
-    document.getElementById('registerForm').style.display = 'none';
+  if (pass.length < 6) {
+    msg.innerText = "Mật khẩu phải ít nhất 6 ký tự!";
+    return;
   }
-}
-
-// 👉 Đóng form khi bấm phím ESC
-document.addEventListener('keydown', function(event) {
-  if (event.key === "Escape") {
-    document.getElementById('registerForm').style.display = 'none';
+  if (forbidden.some(word => nameLower.includes(word))) {
+    msg.innerText = "Tên không được chứa từ bị cấm (gm, ad, admin,...)!";
+    return;
   }
-});
+  if (/^\d+$/.test(name)) {
+    msg.innerText = "Tên không được chỉ gồm số!";
+    return;
+  }
+
+  // Gửi đến API
+  fetch('https://103.162.21.114/register.php', {
+    method: 'POST',
+    headers: {'Content-Type': 'application/json'},
+    body: JSON.stringify({ name: name, password: pass })
+  })
+  .then(res => res.json())
+  .then(data => {
+    msg.innerText = data.message;
+  })
+  .catch(error => {
+    msg.innerText = "Đã xảy ra lỗi: " + error.message;
+  });
+}
 </script>
+
 </body>
 </html>
