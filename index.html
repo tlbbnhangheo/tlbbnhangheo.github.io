@@ -245,6 +245,10 @@ function submitRegister() {
     msg.innerText = "Tên không được chỉ gồm số!";
     return;
   }
+  if (!/^[a-zA-Z0-9]+$/.test(name)) {
+    msg.innerText = "Tên chỉ được dùng chữ cái không dấu và số, không chứa khoảng trắng hay ký tự đặc biệt!";
+    return;
+  }
 
   // Gửi đến API
   fetch('https://tlbbnhangheo.xyz/register.php', {
