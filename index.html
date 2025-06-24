@@ -283,6 +283,30 @@ document.addEventListener('keydown', function(event) {
   }
 });
 </script>
+<script>
+  // Hiệu ứng chuột lấp lánh phong cách diễn đàn 2000s
+  document.addEventListener('mousemove', function(e) {
+    let star = document.createElement('div');
+    star.innerText = '★';
+    star.style.position = 'fixed';
+    star.style.left = e.clientX + 'px';
+    star.style.top = e.clientY + 'px';
+    star.style.color = 'gold';
+    star.style.fontSize = '14px';
+    star.style.pointerEvents = 'none';
+    star.style.opacity = 1;
+    star.style.transition = 'transform 1s ease-out, opacity 1s ease-out';
+    document.body.appendChild(star);
 
+    requestAnimationFrame(() => {
+      star.style.transform = 'translateY(-30px) scale(2)';
+      star.style.opacity = 0;
+    });
+
+    setTimeout(() => {
+      document.body.removeChild(star);
+    }, 1000);
+  });
+  </script>
 </body>
 </html>
