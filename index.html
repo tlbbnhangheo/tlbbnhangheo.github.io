@@ -308,5 +308,28 @@ document.addEventListener('keydown', function(event) {
     }, 1000);
   });
   </script>
+<!-- Nhạc nền .mp3 (phát khi người dùng nhấp chuột bất kỳ) -->
+<audio id="bgmusic" autoplay loop>
+  <source src="tlbb-theme.mp3" type="audio/mpeg">
+  Trình duyệt của bạn không hỗ trợ phát nhạc.
+</audio>
+
+<style>
+  audio {
+    display: none;
+  }
+</style>
+
+<script>
+// Phát nhạc sau khi người dùng tương tác đầu tiên (click bất kỳ)
+document.addEventListener('click', function playMusicOnce() {
+  const music = document.getElementById('bgmusic');
+  if (music && music.paused) {
+    music.play().catch(() => {});
+  }
+  // Gỡ bỏ listener sau lần đầu
+  document.removeEventListener('click', playMusicOnce);
+});
+</script>
 </body>
 </html>
